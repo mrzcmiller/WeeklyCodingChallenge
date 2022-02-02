@@ -1,5 +1,5 @@
 
-public class Problem2 {
+public class Problem2_31Jan2022 {
 	static String number = "9473745364784876"; // Number to be multiplied by 11
 	static char[] values = new char[number.length()]; // Array to hold values in case they need to be incremented
 	static boolean needsLeadingOne = false; // Boolean which will add a leading 1 in front of the array should an
