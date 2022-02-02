@@ -1,6 +1,6 @@
 
 public class Problem2_31Jan2022 {
-	static String number = "9473745364784876"; // Number to be multiplied by 11
+	static String number = "824653719"; // Number to be multiplied by 11
 	static char[] values = new char[number.length()]; // Array to hold values in case they need to be incremented
 	static boolean needsLeadingOne = false; // Boolean which will add a leading 1 in front of the array should an
 											// increment be necessary on index 0
@@ -17,8 +17,10 @@ public class Problem2_31Jan2022 {
 	public static String multiplyBy11(String positiveNumber) {
 		values[0] = positiveNumber.charAt(0); // Set first number to index 0
 
-		// increment through the provided number and send the current index position,
-		// it's value, and the next position's value to be calculated
+		/*
+		 * increment through the provided number and send the current index position,
+		 * it's value, and the next position's value to be calculated
+		 */
 		for (int valuesArrayIndex = 0; valuesArrayIndex < positiveNumber.length() - 1; valuesArrayIndex++) {
 			getValue(positiveNumber.charAt(valuesArrayIndex), positiveNumber.charAt(valuesArrayIndex + 1),
 					valuesArrayIndex);
@@ -44,8 +46,10 @@ public class Problem2_31Jan2022 {
 		String sumOfNumbers = String.valueOf((firstNumber - 48) + (secondNumber - 48)); // Add the numbers together
 																						// using the ascii values -48
 
-		// Check if the result is a single or double digit value by seeing if length is
-		// greater than 1
+		/*
+		 * Check if the result is a single or double digit value by seeing if length is
+		 * greater than 1
+		 */
 		if (sumOfNumbers.length() > 1) {
 			values[index + 1] = sumOfNumbers.charAt(1); // Store the ones digit to the array
 			carryTheOne(index); // Call the carryTheOne method and pass in the index value
@@ -57,42 +61,36 @@ public class Problem2_31Jan2022 {
 	}
 
 	/*
-	 * carryTheOne method takes an index as an argument, increments the value at
-	 * that position by one, checks to see if doing so requires incrementation of
-	 * the previous value, and if at position 0 sets the needsLeadingOne property to
-	 * true.
+	 * carryTheOne method takes an index as an argument and uses a switch for control flow
+	 * The switch is based on the value stored at the index of the values array
 	 */
 	public static void carryTheOne(int index) {
 
-		/*
-		 * Check to see if the position being checked is index 0 and the value of the
-		 * index is 9 This is used to set the needsLeadingOne property to true instead
-		 * of shifting the array
-		 */
-		if (index == 0 && values[index] == '9') {
-			values[index] = '0'; // Set the value in position 0 to '0'
-			needsLeadingOne = true; // Set the property to true so a 1 will appear at the beginning of the number
-									// string
-			return; // Leave the method
-		}
+		switch (values[index]) {
 
-		// If the value at the index position is not nine, increment the value
-		else if (values[index] != '9') {
-			values[index]++;
-		}
-
-		/*
-		 * The else statement will cover incrementation in which the index position is
-		 * not 0. The value will be set to '0' and the method will recurse with the
-		 * previous position. This is done to accommodate for instances in which
-		 * incrementing the value of the current index causes the previous index to be
-		 * incremented. Should all previous indexes be 9s, the if statement will set the
-		 * needsLeadingOne property and add a '1' before the string of values from the
-		 * array
+		/* 
+		 * If the value is 9, set the value to 0 and check to see if the index is 0
+		 * If the index is 0, set the needsLeadingOne property to true
+		 * If the index is not 0, call the carryTheOne method recursively with the previous index as the argument
+		 * Break from the switch
+		 * 
+		 * If the value is anything other than a 9, increment the value by 1
 		 */
-		else {
+		case '9':
 			values[index] = '0'; // Set the value to '0'
-			carryTheOne(index - 1); // Call the method recursively with the previous index as the argument
+
+			if (index == 0) {
+				needsLeadingOne = true; // Set the property to true to append '1' to string during build
+			}
+
+			else {
+				carryTheOne(index - 1); // Call the method recursively with the previous index as the argument
+			}
+
+			break;
+
+		default:
+			values[index]++; // Increment the value by 1
 		}
 	}
 
@@ -123,39 +121,42 @@ public class Problem2_31Jan2022 {
 	}
 
 	/*
-	 * The main method prints out: 
-	 * The number being multiplied by 11
-	 * The results from multiplyBy11Test method
-	 * The result from multiplyBy11 method
-	 * A boolean value of whether the values returned are equal (done to ensure that the created method works)
+	 * The main method prints out: The number being multiplied by 11 The results
+	 * from multiplyBy11Test method The result from multiplyBy11 method A boolean
+	 * value of whether the values returned are equal (done to ensure that the
+	 * created method works)
 	 * 
-	 * The main methods calls both methods using the number to be multiplied as an argument
+	 * The main methods calls both methods using the number to be multiplied as an
+	 * argument
 	 */
 	public static void main(String[] args) {
-		System.out.println("Number:              " + number);
+		System.out.println("Number: " + number);
 		String testResult = multiplyBy11Test(number);
 		String methodResult = multiplyBy11(number);
 
-		System.out.println("Test result:       " + testResult.toString());
-		System.out.println("Method result:     " + methodResult.toString());
+		System.out.println("Test result:   " + testResult.toString());
+		System.out.println("Method result: " + methodResult.toString());
 		System.out.println("Checking accuracy: " + testResult.equals(methodResult));
 
 	}
 
-	/* 
-	 * multiplyBy11Test method is used to ensure that the method being created works as 
-	 * well as a visual queue as to what may not be working should they not match. The final number
-	 * provided in the list was too large to parse, so numbers greater than 18 digits just returns a
-	 * string explaining that the number cannot be tested. 
-	 * It checks to see that the number is less than 19 digits and if so, parses the string into a long,
-	 * multiplies that long by 11, stores that value as a string, and returns it to the main method.
+	/*
+	 * multiplyBy11Test method is used to ensure that the method being created works
+	 * as well as a visual queue as to what may not be working should they not
+	 * match. The final number provided in the list was too large to parse, so
+	 * numbers greater than 18 digits just returns a string explaining that the
+	 * number cannot be tested. It checks to see that the number is less than 19
+	 * digits and if so, parses the string into a long, multiplies that long by 11,
+	 * stores that value as a string, and returns it to the main method.
 	 */
 	public static String multiplyBy11Test(String positiveNumber) {
 		if (positiveNumber.length() < 19) { // Check if number is less than 19 digits in length
 			long number = Long.parseLong(positiveNumber); // Parse the string to a long and store the value
-			String numberAsString = String.valueOf(number * 11); // Multiply the value by 11, convert it to a string, and store it
+			String numberAsString = String.valueOf(number * 11); // Multiply the value by 11, convert it to a string,
+																	// and store it
 			return numberAsString; // Return the result to the main method
 		}
-		return "Number too large to test"; // If the number is greater than 18 digits, return message that number is too large to test
+		return "Number too large to test"; // If the number is greater than 18 digits, return message that number is too
+											// large to test
 	}
 }
