@@ -1,0 +1,23 @@
+leftSwitch
+middleSwitch
+rightSwitch
+
+Turn on leftSwitch and middleSwitch
+Go to room with light bulbs
+Name the bulbs:
+  overheadLight
+  deskLamp
+  readingLamp
+  
+Whichever light is not turned belongs to rightSwitch
+  rightSwitch = notOnLight;
+  
+Return to switch room
+Turn off middleSwitch
+
+Go to room with light bulbs
+Whichever light is on belongs to leftSwitch
+  leftSwitch = stillOnLight
+  
+The other light belongs to middleSwitch
+  middleSwitch = theOtherLight
